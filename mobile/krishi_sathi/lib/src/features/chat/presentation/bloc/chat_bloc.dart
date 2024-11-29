@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:krishi_sathi/src/features/chat/data/dto/ask_bot_request_dto.dart';
 import 'package:krishi_sathi/src/features/chat/domain/entities/message.dart';
+import 'package:krishi_sathi/src/features/chat/domain/usecases/get_audio_transcript_usecase.dart';
 import 'package:krishi_sathi/src/features/chat/domain/usecases/get_audio_usecase.dart';
 import 'package:krishi_sathi/src/features/chat/domain/usecases/get_followup_usecase.dart';
 import 'package:krishi_sathi/src/features/chat/domain/usecases/get_message_usecase.dart';
@@ -15,10 +16,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final GetMessageUsecase getMessageUsecase;
   final GetAudioUsecase getAudioUsecase;
   final GetFollowupUsecase getFollowupUsecase;
+  final GetAudioTranscriptUsecase getAudioTranscriptUsecase;
   ChatBloc({
     required this.getMessageUsecase,
     required this.getAudioUsecase,
     required this.getFollowupUsecase,
+    required this.getAudioTranscriptUsecase,
   }) : super(ChatInitial()) {
     on<ChatEvent>((event, emit) async {
       if (event is GetMessage) {
@@ -29,6 +32,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       }
       if (event is GetFollowUp) {
         await _GetFollowUp(event, emit);
+      }
+      if (event is GetAudioTranscript) {
+        await _GetAudioTranscript(event, emit);
       }
     });
   }
@@ -57,6 +63,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     result.fold(
       (failure) => emit(FollowUpFailed(failure.message)),
       (success) => emit(FollowUpSuccess(followup: success)),
+    );
+  }
+
+  _GetAudioTranscript(GetAudioTranscript event, Emitter<ChatState> emit) async {
+    emit(const AudioTranscriptLoading());
+    final result = await getAudioTranscriptUsecase(event.audioData);
+    result.fold(
+      (failure) => emit(AudioTranscriptfailed(failure.message)),
+      (success) => emit(AudioTranscriptSuccess(audioTranscript: success)),
     );
   }
 }

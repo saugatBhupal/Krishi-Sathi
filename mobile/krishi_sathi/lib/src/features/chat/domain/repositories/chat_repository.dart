@@ -9,4 +9,5 @@ abstract class ChatRepository {
   Future<Either<Failure, MessageEntity>> getMessage(File media);
   Future<Either<Failure, List<int>>> getAudio(String text);
   Future<Either<Failure, MessageEntity>> getFollowUp(AskBotRequestDto dto);
+  Future<Either<Failure, String>> getAudioTranscript(File audioData);
 }

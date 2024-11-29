@@ -24,3 +24,8 @@ class GetFollowUp extends ChatEvent {
 
   const GetFollowUp({required this.dto});
 }
+
+class GetAudioTranscript extends ChatEvent {
+  final File audioData;
+  const GetAudioTranscript({required this.audioData});
+}

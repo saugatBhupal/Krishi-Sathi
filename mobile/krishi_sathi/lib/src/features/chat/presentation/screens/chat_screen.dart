@@ -15,6 +15,7 @@ import 'package:krishi_sathi/src/features/chat/domain/entities/message.dart';
 import 'package:krishi_sathi/src/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:krishi_sathi/src/features/chat/presentation/widgets/additional_functions.dart';
 import 'package:krishi_sathi/src/features/chat/presentation/widgets/ask_question.dart';
+import 'package:krishi_sathi/src/features/chat/presentation/widgets/audio_record.dart';
 import 'package:krishi_sathi/src/features/chat/presentation/widgets/suggested_questions.dart';
 import 'package:krishi_sathi/src/features/chat/presentation/widgets/summary.dart';
 
@@ -90,6 +91,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 _questionFollowupNepali.add(_selectedQuestionNepali!);
               }
               _scrollToBottom();
+            }
+            if (state is AudioTranscriptSuccess) {
+              _descriptionController.text = state.audioTranscript;
             }
           },
           builder: (context, state) {
@@ -190,7 +194,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: Row(
                       children: [
                         Expanded(
-                          // Use Expanded to fill available space
                           child: DescriptionField(
                             controller: _descriptionController,
                             title:
@@ -212,6 +215,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           ),
                         ),
                         const SizedBox(width: 8),
+                        const AudioRecord(),
                       ],
                     ),
                   ),

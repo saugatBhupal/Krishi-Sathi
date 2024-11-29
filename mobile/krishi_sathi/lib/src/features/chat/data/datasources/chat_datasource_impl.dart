@@ -86,4 +86,31 @@ class ChatDatasourceImpl implements ChatDatasource {
       return await handleErrorResponse(e);
     }
   }
+
+  @override
+  Future<String> getAudioTranscript(File audioData) async {
+    try {
+      print("media ${audioData.path}+++++++++");
+      FormData mediaData = FormData.fromMap({
+        'audio': await MultipartFile.fromFile(
+          audioData.path,
+          filename: audioData.path.split('/').last,
+        ),
+      });
+      final res = await dio.post(ApiEndpoints.audioTranscript, data: mediaData);
+      if (res.statusCode == 200) {
+        print("Audio uploaded successfully!");
+        return (res.toString());
+        // return ("res.toString()");
+      } else {
+        throw Failure(
+          message: res.statusMessage.toString(),
+          statusCode: res.statusCode.toString(),
+        );
+      }
+    } on DioException catch (e) {
+      print("DioException: ${e.message}");
+      return await handleErrorResponse(e);
+    }
+  }
 }

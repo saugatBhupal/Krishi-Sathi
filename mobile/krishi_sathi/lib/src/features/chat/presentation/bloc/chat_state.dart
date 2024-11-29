@@ -51,3 +51,17 @@ class FollowUpFailed extends ChatState {
   final String message;
   const FollowUpFailed(this.message);
 }
+
+class AudioTranscriptLoading extends ChatState {
+  const AudioTranscriptLoading();
+}
+
+class AudioTranscriptSuccess extends ChatState {
+  final String audioTranscript;
+  const AudioTranscriptSuccess({required this.audioTranscript});
+}
+
+class AudioTranscriptfailed extends ChatState {
+  final String message;
+  const AudioTranscriptfailed(this.message);
+}

@@ -7,4 +7,5 @@ abstract class ChatDatasource {
   Future<MessageModel> getMessage(File media);
   Future<List<int>> getAudio(String text);
   Future<MessageModel> getFollowUp(AskBotRequestDto dto);
+  Future<String> getAudioTranscript(File audioData);
 }

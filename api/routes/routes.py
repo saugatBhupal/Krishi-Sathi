@@ -34,15 +34,23 @@ def answer_question():
         "insect" : "" 
     }
 '''                                            
-@app.route('/ask-bot', methods=['POST'])
+@app.route('/get-tts', methods=['POST'])
 def get_tts():
     data = (request.get_json())
     prompt = data.get('text', None)
-    insect = data.get('insect', None)
-    print("question", prompt)
-    response = "llm response"
-    print(response)
-    return response, 200
+    print(prompt)
+    
+    audio_buffer = tts_service.get_TTS(prompt)
+    
+    if audio_buffer.getbuffer().nbytes == 0:
+        return {'error': 'Audio generation failed'}, 500
+    
+    return send_file(
+        audio_buffer,
+        as_attachment=True,
+        download_name='output.wav',
+        mimetype='audio/wav'
+    )
 
 @app.route('/ask-bot-audio', methods = ['POST'])
 def get_answer_from_audio():

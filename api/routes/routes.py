@@ -4,13 +4,15 @@ import io
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from engines.sts_engine import transcribe_audio
+from api.engines.stt_engine import stt_service
 from engines.llm_engine import llm_service
 from engines.tts_engine import tts_service
 
 
 app =Flask(__name__)
 llm_service =llm_service()
+tts_service = tts_service()
+stt_service = stt_service()
           
 @app.route('/upload-image', methods=['POST'])
 def upload_image():
@@ -20,8 +22,9 @@ def upload_image():
 
     try:
         image = Image.open(image_file)
-        print(image.size)
-        response = ""
+        predicted_class = Classifier.classify_insects(image)
+        # response = predicted_class
+        response = llm_service.generate_insect_info(predicted_class)
         return response, 200
 
     except Exception as e:
@@ -66,7 +69,7 @@ def get_answer_from_audio():
         input_audio = audio_file.read()
 
         input_buffer = io.BytesIO(input_audio)
-        res = transcribe_audio(input_buffer)
+        res = stt_service.transcribe_audio(input_buffer)
         
         return str(res),200
     except Exception as e:

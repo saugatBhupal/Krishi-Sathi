@@ -14,7 +14,7 @@ class App extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      initialRoute: AppRoutes.noRoute,
+      initialRoute: AppRoutes.splash,
       onGenerateRoute: AppRouter.generateRoute,
       theme: AppTheme.getApplicationTheme(isDark: false),
     );

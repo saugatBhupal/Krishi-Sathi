@@ -110,3 +110,4 @@ class llm_service:
         except Exception as error:
             print('Error:', error)
             return None
+        

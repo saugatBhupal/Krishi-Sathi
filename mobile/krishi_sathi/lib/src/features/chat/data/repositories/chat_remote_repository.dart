@@ -21,4 +21,14 @@ class ChatRemoteRepository implements ChatRepository {
       return Left(Failure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, List<int>>> getAudio(String text) async {
+    try {
+      final List<int> audioBytes = await chatDatasource.getAudio(text);
+      return Right(audioBytes);
+    } catch (e) {
+      return Left(Failure(message: e.toString()));
+    }
+  }
 }

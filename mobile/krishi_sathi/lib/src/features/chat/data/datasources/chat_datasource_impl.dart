@@ -39,4 +39,30 @@ class ChatDatasourceImpl implements ChatDatasource {
       return await handleErrorResponse(e);
     }
   }
+
+  @override
+  Future<List<int>> getAudio(String text) async {
+    try {
+      final response = await dio.post(
+        ApiEndpoints.getAudio,
+        data: jsonEncode({"text": text}),
+        options: Options(
+          headers: {'Content-Type': 'application/json'},
+          responseType: ResponseType.bytes,
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return response.data as List<int>;
+      } else {
+        throw Failure(
+          message: response.statusMessage ?? 'Unknown error',
+          statusCode: response.statusCode.toString(),
+        );
+      }
+    } on DioException catch (e) {
+      print("DioException: ${e.message}");
+      return await handleErrorResponse(e);
+    }
+  }
 }

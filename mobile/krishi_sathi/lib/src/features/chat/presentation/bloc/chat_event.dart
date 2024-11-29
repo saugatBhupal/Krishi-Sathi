@@ -12,3 +12,9 @@ class GetMessage extends ChatEvent {
 
   const GetMessage({required this.media});
 }
+
+class GetAudio extends ChatEvent {
+  final String text;
+
+  const GetAudio({required this.text});
+}

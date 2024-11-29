@@ -22,3 +22,18 @@ class MessageLoadingFailed extends ChatState {
   final String message;
   const MessageLoadingFailed(this.message);
 }
+
+class AudioLoading extends ChatState {
+  const AudioLoading();
+}
+
+class AudioLoadingSuccess extends ChatState {
+  final List<int> audioBytes;
+
+  const AudioLoadingSuccess({required this.audioBytes});
+}
+
+class AudioLoadingFailed extends ChatState {
+  final String message;
+  const AudioLoadingFailed(this.message);
+}

@@ -6,4 +6,5 @@ import 'package:krishi_sathi/src/features/chat/domain/entities/message.dart';
 
 abstract class ChatRepository {
   Future<Either<Failure, MessageEntity>> getMessage(File media);
+  Future<Either<Failure, List<int>>> getAudio(String text);
 }

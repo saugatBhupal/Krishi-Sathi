@@ -5,9 +5,13 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from engines.sts_engine import transcribe_audio
+from engines.llm_engine import llm_service
+from engines.tts_engine import tts_service
+
 
 app =Flask(__name__)
-                                
+llm_service =llm_service()
+          
 @app.route('/upload-image', methods=['POST'])
 def upload_image():
     if 'image' not in request.files:

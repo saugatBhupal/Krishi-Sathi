@@ -24,16 +24,17 @@ def upload_image():
         return jsonify({'error': str(e)}), 500
 
 
-def answer_question():
-    pass
-        
-
-'''
-    {
-        "text" : "",
-        "insect" : "" 
-    }
-'''                                            
+@app.route('/ask-bot', methods=['POST'])
+def get_followup():
+    data = (request.get_json())
+    prompt = data.get('text', None)
+    insect = data.get('insect', None)
+    print("question", prompt)
+    response = llm_service.generate_followup(insect, prompt)
+    print(response)
+    return response, 200
+    
+                                        
 @app.route('/get-tts', methods=['POST'])
 def get_tts():
     data = (request.get_json())

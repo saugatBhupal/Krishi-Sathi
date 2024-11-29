@@ -6,6 +6,7 @@ import 'package:krishi_sathi/src/core/error/failure.dart';
 import 'package:krishi_sathi/src/core/http/api_endpoints.dart';
 import 'package:krishi_sathi/src/core/http/handle_error_response.dart';
 import 'package:krishi_sathi/src/features/chat/data/datasources/chat_datasource.dart';
+import 'package:krishi_sathi/src/features/chat/data/dto/ask_bot_request_dto.dart';
 import 'package:krishi_sathi/src/features/chat/data/models/message_model.dart';
 
 class ChatDatasourceImpl implements ChatDatasource {
@@ -62,6 +63,26 @@ class ChatDatasourceImpl implements ChatDatasource {
       }
     } on DioException catch (e) {
       print("DioException: ${e.message}");
+      return await handleErrorResponse(e);
+    }
+  }
+
+  @override
+  Future<MessageModel> getFollowUp(AskBotRequestDto dto) async {
+    try {
+      var res = await dio.post(ApiEndpoints.askBot, data: dto.toJson());
+      print("req data ${dto.toJson()}");
+      print("Response data ${res.data}");
+      if (res.statusCode == 200) {
+        return MessageModel.fromJson(
+            jsonDecode(res.data) as Map<String, dynamic>);
+      } else {
+        throw Failure(
+          message: res.statusMessage.toString(),
+          statusCode: res.statusCode.toString(),
+        );
+      }
+    } on DioException catch (e) {
       return await handleErrorResponse(e);
     }
   }

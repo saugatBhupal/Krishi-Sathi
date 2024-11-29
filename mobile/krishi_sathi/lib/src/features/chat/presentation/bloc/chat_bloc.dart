@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:krishi_sathi/src/features/chat/data/dto/ask_bot_request_dto.dart';
 import 'package:krishi_sathi/src/features/chat/domain/entities/message.dart';
 import 'package:krishi_sathi/src/features/chat/domain/usecases/get_audio_usecase.dart';
+import 'package:krishi_sathi/src/features/chat/domain/usecases/get_followup_usecase.dart';
 import 'package:krishi_sathi/src/features/chat/domain/usecases/get_message_usecase.dart';
 
 part 'chat_event.dart';
@@ -12,10 +14,11 @@ part 'chat_state.dart';
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final GetMessageUsecase getMessageUsecase;
   final GetAudioUsecase getAudioUsecase;
-
+  final GetFollowupUsecase getFollowupUsecase;
   ChatBloc({
     required this.getMessageUsecase,
     required this.getAudioUsecase,
+    required this.getFollowupUsecase,
   }) : super(ChatInitial()) {
     on<ChatEvent>((event, emit) async {
       if (event is GetMessage) {
@@ -23,6 +26,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       }
       if (event is GetAudio) {
         await _GetAudio(event, emit);
+      }
+      if (event is GetFollowUp) {
+        await _GetFollowUp(event, emit);
       }
     });
   }
@@ -42,6 +48,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     result.fold(
       (failure) => emit(AudioLoadingFailed(failure.message)),
       (success) => emit(AudioLoadingSuccess(audioBytes: success)),
+    );
+  }
+
+  _GetFollowUp(GetFollowUp event, Emitter<ChatState> emit) async {
+    emit(const FollowUpLoading());
+    final result = await getFollowupUsecase(event.dto);
+    result.fold(
+      (failure) => emit(FollowUpFailed(failure.message)),
+      (success) => emit(FollowUpSuccess(followup: success)),
     );
   }
 }

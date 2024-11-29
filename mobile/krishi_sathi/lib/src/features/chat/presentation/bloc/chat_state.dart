@@ -37,3 +37,17 @@ class AudioLoadingFailed extends ChatState {
   final String message;
   const AudioLoadingFailed(this.message);
 }
+
+class FollowUpLoading extends ChatState {
+  const FollowUpLoading();
+}
+
+class FollowUpSuccess extends ChatState {
+  final MessageEntity followup;
+  const FollowUpSuccess({required this.followup});
+}
+
+class FollowUpFailed extends ChatState {
+  final String message;
+  const FollowUpFailed(this.message);
+}

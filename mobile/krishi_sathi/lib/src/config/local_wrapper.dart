@@ -4,7 +4,7 @@ import 'package:krishi_sathi/src/core/constants/custom_locale.dart';
 
 class LocalWrapper extends StatelessWidget {
   final Widget _child;
-  const LocalWrapper({required Widget child}) : _child = child;
+  const LocalWrapper({super.key, required Widget child}) : _child = child;
   @override
   Widget build(BuildContext context) {
     return EasyLocalization(

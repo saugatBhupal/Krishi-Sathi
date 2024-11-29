@@ -18,3 +18,9 @@ class GetAudio extends ChatEvent {
 
   const GetAudio({required this.text});
 }
+
+class GetFollowUp extends ChatEvent {
+  final AskBotRequestDto dto;
+
+  const GetFollowUp({required this.dto});
+}

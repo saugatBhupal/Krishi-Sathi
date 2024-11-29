@@ -89,9 +89,9 @@ String getErrorMessage(dynamic res) {
     debugPrint("-------------------GET ERROR ------------------");
     if (res["message"] is List) {
       final List<dynamic> messages = res['message'][0]["messages"];
-      messages.forEach((dynamic element) {
+      for (var element in messages) {
         message += (element as Map<String, dynamic>)['message'] + '\n';
-      });
+      }
     } else if (res["message"] is String) {
       message = res["message"];
     } else if (res["error"] is Map) {
